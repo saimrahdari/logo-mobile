@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "583541650197",
+    "project_id": "logo-daxno",
+    "storage_bucket": "logo-daxno.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:583541650197:android:e9acca0b0c155a72a9af1c",
+        "android_client_info": {
+          "package_name": "com.example.logo"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "583541650197-5t063qcsvbkt68tmokv44jevilsgpop5.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBY49vhmFCrqCWg_0eZ4GWvdpS7eWuFtjc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "583541650197-5t063qcsvbkt68tmokv44jevilsgpop5.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
