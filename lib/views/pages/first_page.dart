@@ -131,7 +131,7 @@ class _FirstPageState extends State<FirstPage> {
                                       image: DecorationImage(
                                           image: NetworkImage(
                                               '${snapshot.data?['image']}'),
-                                          fit: BoxFit.fill),
+                                          fit: BoxFit.cover),
                                       color: Colors.white)),
                             );
                           } else {
@@ -173,6 +173,7 @@ class _FirstPageState extends State<FirstPage> {
                 ),
                 SingleChildScrollView(
                     scrollDirection: Axis.horizontal,
+                    physics: BouncingScrollPhysics(),
                     child: Row(children: [
                       GestureDetector(
                         child: card("Hotel", "assets/hotels.png"),

@@ -123,7 +123,7 @@ class _nearMePageState extends State<nearMePage> {
                                       image: DecorationImage(
                                           image:
                                           NetworkImage('${snapshot.data?['image']}'),
-                                          fit: BoxFit.fill),
+                                          fit: BoxFit.cover),
                                       color: Colors.white)),
                             );
                           }else{ return IconButton(

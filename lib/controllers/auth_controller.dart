@@ -65,12 +65,27 @@ class AuthController extends GetxController {
                     'name':FirebaseAuth.instance.currentUser!.displayName,
                     'phone':phone.text,
                     'image':'',
-                    'email':'',
+                    'email':email.text,
                   });
             });
       });
     } catch (e) {
       Get.snackbar("Error Signing up", e.toString());
+    }
+  }
+
+  void updateInfo(name,phone) async {
+    try {
+      await FirebaseFirestore.instance.collection('users').doc(FirebaseAuth.instance.currentUser!.uid).update(
+          {
+            'name':name==''?FirebaseAuth.instance.currentUser!.displayName:name,
+            'phone':phone==''?FirebaseAuth.instance.currentUser!.phoneNumber:phone,
+          }).then((value) {
+            print('User name: $name is updated as new.');
+      });
+
+    } catch (e) {
+      Get.snackbar("Error updating info", e.toString());
     }
   }
 

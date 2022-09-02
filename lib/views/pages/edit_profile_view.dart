@@ -1,7 +1,15 @@
+import 'dart:io';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:file_picker/file_picker.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:get/get.dart';
 
+import '../../controllers/auth_controller.dart';
 import '../widgets/CustomTextFields.dart';
 
 class edit_profile_view extends StatefulWidget {
@@ -12,15 +20,18 @@ class edit_profile_view extends StatefulWidget {
 }
 
 class _edit_profile_viewState extends State<edit_profile_view> {
+  var controller = Get.find<AuthController>();
+  TextEditingController name = TextEditingController();
+  TextEditingController phone = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xfffff4f8),
-      body: Stack(
-        children: [
-          Container(
-            height: MediaQuery.of(context).size.height,
-            child: Column(
+      backgroundColor: Colors.indigo,
+      body: SingleChildScrollView(
+        physics: BouncingScrollPhysics(),
+        child: Stack(
+          children: [
+            Column(
               children: [
                 Padding(
                   padding:
@@ -51,9 +62,9 @@ class _edit_profile_viewState extends State<edit_profile_view> {
                           ),
                         ),
                       ),
-                      Text("   Bilgilerinizi Düzenleyin",
+                      Text("   Edit your profile",
                           style: const TextStyle(
-                              color: const Color(0xff232a2c),
+                              color: Colors.white,
                               fontWeight: FontWeight.w900,
                               fontFamily: "Avenir",
                               fontStyle: FontStyle.normal,
@@ -82,7 +93,7 @@ class _edit_profile_viewState extends State<edit_profile_view> {
                           height: 40,
                         ),
                         Text(
-                          "Ad Soyad",
+                          "Name",
                           style: TextStyle(
                             fontFamily: 'Avenir',
                             color: Color(0xff939393),
@@ -92,10 +103,11 @@ class _edit_profile_viewState extends State<edit_profile_view> {
                           ),
                         ),
                         CustomTextFields(obscureText: false,
+                          controller: name,
                           prefixIcon: Icon(Icons.person_outline,color: Colors.grey.shade400,),
                         ),
                         Text(
-                          'Telefon',
+                          'Phone number',
                           style: TextStyle(
                             color: Color(0xff939393),
                             fontFamily: 'Avenir',
@@ -103,60 +115,56 @@ class _edit_profile_viewState extends State<edit_profile_view> {
                           ),
                         ),
                         CustomTextFields(obscureText: false,
+                          controller: phone,
                           prefixIcon: Icon(CupertinoIcons.phone,color: Colors.grey.shade400,),
                         ),
-                        Text(
-                          'Eposta',
-                          style: TextStyle(
-                            color: Color(0xff939393),
-                            fontFamily: 'Avenir',
-                            fontWeight: FontWeight.w900,
+                        ///////
+                        SizedBox(height: 20,),
+                        InkWell(
+                          onTap: (){
+                            controller.updateInfo(name.text, phone.text);
+                            Get.snackbar('Info Updated', 'Your Name & phone number is updated.',colorText: Colors.white,backgroundColor: Colors.black26);
+                          },
+                          child: Container(
+                            height: 50,
+                            decoration: BoxDecoration(
+                              color: Colors.indigo,
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                            child: Center(
+                              child: Text('Update Info',
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 16,
+                                  fontFamily: 'Avenir',
+                                  fontWeight: FontWeight.w900,
+                                ),
+                              ),
+                            ),
                           ),
-                        ),
-                        CustomTextFields(obscureText: false,
-                          prefixIcon: Icon(Icons.email_outlined,color: Colors.grey.shade400,),
-                        ),
-                        Text(
-                          'Parola',
-                          style: TextStyle(
-                            color: Color(0xff939393),
-                            fontFamily: 'Avenir',
-                            fontWeight: FontWeight.w900,
-                          ),
-                        ),
-                        CustomTextFields(obscureText: false,
-                          prefixIcon: Icon(FontAwesomeIcons.key,color: Colors.grey.shade400,size: 15,),
-                          leadinIcon: Icon(FontAwesomeIcons.eye,color:Theme.of(context).primaryColor,size: 20,),
-
-                        ),
-                        Text(
-                          'Parola (Tekrar)',
-                          style: TextStyle(
-                            color: Color(0xff939393),
-                            fontFamily: 'Avenir',
-                            fontWeight: FontWeight.w900,
-                          ),
-                        ),
-                        CustomTextFields(obscureText: false,
-                          prefixIcon: Icon(FontAwesomeIcons.key,color: Colors.grey.shade400,size: 15,),
-                          leadinIcon: Icon(FontAwesomeIcons.eye,color:Theme.of(context).primaryColor,size: 20,),
-
                         ),
                         SizedBox(height: 20,),
-                        Container(
-                          height: 50,
-                          decoration: BoxDecoration(
-                            color: Color(0xfffd7bac),
-                            borderRadius: BorderRadius.circular(12),
+                        InkWell(
+                          onTap: (){
+                            resetPassword();
+                          },
+                          child: Container(
+                            height: 50,
+                            decoration: BoxDecoration(
+                              color: Colors.grey.shade100,
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                            child: Center(
+                                child: Text('Reset Password',
+                                    style: TextStyle(
+                                      color: Colors.indigo,
+                                      fontSize: 16,
+                                      fontFamily: 'Avenir',
+                                      fontWeight: FontWeight.w900,
+                                    ),
+                                ),
+                            ),
                           ),
-                          child: Center(
-                              child: Text('Kaydet',
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 16,
-                                    fontFamily: 'Avenir',
-                                    fontWeight: FontWeight.w900,
-                                  ))),
                         ),
                       ],
                     ),
@@ -164,48 +172,79 @@ class _edit_profile_viewState extends State<edit_profile_view> {
                 ),
               ],
             ),
-          ),
-          Positioned(
-            top: MediaQuery.of(context).size.height * 0.2,
-            left: MediaQuery.of(context).size.width * 0.3,
-            width: 120,
-            height: 120,
-            child: Container(
+            Positioned(
+              top: MediaQuery.of(context).size.height * 0.2,
+              left: MediaQuery.of(context).size.width * 0.3,
               width: 120,
               height: 120,
-              child: Stack(
-                children: [
-                  Container(
-                      width: 120,
-                      height: 120,
-                      decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          border: Border.all(color: Colors.white, width: 10),
-                          boxShadow: [
-                            BoxShadow(
-                                color: const Color(0x29000000),
-                                offset: Offset(0, 3),
-                                blurRadius: 6,
-                                spreadRadius: 0)
-                          ],
-                          image: DecorationImage(
-                              image:
-                                  AssetImage('assets/images/Mask Group 44.png'),
-                              fit: BoxFit.contain),
-                          color: Colors.white)),
-                  Positioned(
-                      right: 0,
-                      child: Icon(
-                        Icons.add_circle_sharp,
-                        color: Theme.of(context).primaryColor,
-                        size: 30,
-                      ))
-                ],
+              child: Container(
+                width: 120,
+                height: 120,
+                child: Stack(
+                  children: [
+                    StreamBuilder<DocumentSnapshot>(
+                        stream: FirebaseFirestore.instance.collection('users').doc(FirebaseAuth.instance.currentUser!.uid).get().asStream(),
+                        builder: (context, snapshot) {
+                          return Container(
+                              width: 120,
+                              height: 120,
+                              decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  border: Border.all(color: Colors.white, width: 10),
+                                  boxShadow: [
+                                    BoxShadow(
+                                        color: const Color(0x29000000),
+                                        offset: Offset(0, 3),
+                                        blurRadius: 6,
+                                        spreadRadius: 0)
+                                  ],
+                                  image: DecorationImage(
+                                      image:
+                                      NetworkImage('${snapshot.data?['image']}'),
+                                      fit: BoxFit.cover),
+                                  color: Colors.white));
+                        }
+                    ),
+                    Positioned(
+                        right: 0,
+                        child: InkWell(
+                          onTap: ()async{
+                            FilePickerResult? image = await FilePicker.platform.pickFiles(
+                              type: FileType.custom,
+                              allowedExtensions: ['jpg', 'pdf', 'doc'],
+                            );
+                            if(image!=null){
+                              File file = File(image.files.single.path!);
+                              if(image!=null)
+                                FirebaseStorage.instance.ref('profileImages').putFile(file).then((p0) =>
+                                {
+                                  p0.ref.getDownloadURL().then((value) { FirebaseFirestore.instance.collection('users').doc(FirebaseAuth.instance.currentUser!.uid).set(
+                                      {
+                                        'image':value
+                                      });
+                                  })
+                                });
+                            }
+
+                          },
+                          child: Icon(
+                            Icons.add_circle_sharp,
+                            color: Theme.of(context).primaryColor,
+                            size: 30,
+                          ),
+                        ))
+                  ],
+                ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
+  }
+
+  Future resetPassword() async {
+    await FirebaseAuth.instance.sendPasswordResetEmail(email: FirebaseAuth.instance.currentUser!.email!);
+    Get.snackbar('Password reset link sent', 'A password reset link has been sent to your registered email address.',colorText: Colors.white,backgroundColor: Colors.black26);
   }
 }

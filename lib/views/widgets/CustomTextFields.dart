@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 
 
 class CustomTextFields extends StatelessWidget {
-  bool obscureText=true;
+
 
   CustomTextFields(
       { required this.obscureText,
@@ -14,7 +14,7 @@ class CustomTextFields extends StatelessWidget {
         this.hintText,
         this.label,
         this.onchanged,this.prefixIcon,this.onsaved,this.onpressedLeading,this.leadinIcon,this.borderradius,this.hintColor,this.fillColor});
-
+  bool obscureText=false;
   var height;
   var fillColor;
   var hintText;
@@ -35,7 +35,7 @@ class CustomTextFields extends StatelessWidget {
       child: Container(
         height: 50,
         child: TextFormField(
-          obscureText: true,
+          obscureText: obscureText,
           validator: validator ??
                   (String? value) {
                 if (value!.isEmpty) {

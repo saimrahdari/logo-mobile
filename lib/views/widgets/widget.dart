@@ -1,4 +1,5 @@
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -6,9 +7,11 @@ import 'package:logo/controllers/app_controller.dart';
 import 'package:logo/controllers/auth_controller.dart';
 import 'package:logo/views/pages/all_hotel_page.dart';
 import 'package:logo/views/pages/first_page.dart';
+import 'package:logo/views/pages/help_page.dart';
 import 'package:logo/views/pages/near_me.dart';
 
 import '../constants/styles.dart';
+import '../pages/Settings.dart';
 
 class CustomWidget extends StatelessWidget {
   const CustomWidget(
@@ -166,6 +169,7 @@ class _navBarState extends State<navBar> {
                   // setState(() {
                   //   pageIndex = 1;
                   // });
+                  Get.to(SettingsPage());
                 },
                 icon:
                 // pageIndex == 1
@@ -182,6 +186,7 @@ class _navBarState extends State<navBar> {
                   // setState(() {
                   //   pageIndex = 3;
                   // });
+                  Get.to(HelpPage());
                 },
                 icon: Icon(
                   Icons.question_mark_sharp,

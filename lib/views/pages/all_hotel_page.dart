@@ -108,7 +108,7 @@ class _AllHotelPageState extends State<AllHotelPage> {
                                       image: DecorationImage(
                                           image:
                                           NetworkImage('${snapshot.data?['image']}'),
-                                          fit: BoxFit.fill),
+                                          fit: BoxFit.cover),
                                       color: Colors.white)),
                             );
                           }else{ return IconButton(
